@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 
-
 def connect(database):
     try:
         client = MongoClient("mongodb+srv://root:Sagrera2017@cluster0.vxax9o3.mongodb.net/")
@@ -15,3 +14,11 @@ def insertUser(collection, data):
     db = connect("test")
     db[collection].insert_one(data)
     print("Usuario registrado con éxito")
+
+def findUsers(collection):
+    db = connect("test")
+    return db[collection].find()
+
+def testFindOne (collection, email):
+    db = connect("test")
+    return db[collection].find_one({"email":email})
