@@ -1,4 +1,4 @@
-import database, utils, bcrypt, datetime
+import database, utils, bcrypt, datetime, logging
 
 def app(): 
 
@@ -57,6 +57,19 @@ def app():
             else:
                 print("Usuario no encontrado")
 
+        if opcion == "4":
+            email = input("Escribe el mail del usuario a suprimir: ")
+            suprimido = database.deleteUser(db, "users", email)
+            suprimido = dict(suprimido.raw_result)
+            if suprimido['n'] == 1:
+                print(f"Usuario {email} suprimdo ")
+            else:
+                print(f"Usuario {email} no encontrado")
+        
+        if opcion == "5":
+            logging.getLogger('pymongo.<componentName>').setLevel(logging.DEBUG)
+            # https://pymongo.readthedocs.io/en/stable/examples/logging.html
+        
         if opcion == "6":
             email = input("Email del usuario: ")
             producto = input("Producto: ")

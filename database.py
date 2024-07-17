@@ -35,4 +35,8 @@ def insertPurchase(db, collection, email, data):
     #   else:
     #         print("Usuario no registrado en nuestra app")
 
-
+def deleteUser(db, collection, email):
+      return db[collection].delete_one({'email': email})
+      
+def loggingUser(db, collection, email, password):
+      
