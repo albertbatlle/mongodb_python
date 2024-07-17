@@ -37,3 +37,63 @@
         "nombre_prop3-2": valor
     }
 }
+
+# Como relacionar documentos
+- En este ejemplo estamos en primer lugar, gesionando usuarios en MongoDB. Queremos relacionar compras a estos usuarios. ¿Cómo lo hacemos en MongoDB?
+
+## 1- Relación embebido (embedded)
+- En este enfoque, las compras de un uusario se almacenan como un subdocumento dentro del documento de usuario. Ésta estructura es útil si las compras de todos los usuarios no son muy elevadas y no van a crecer de forma descontrolada, dado que MongoDB tiene un límite de 16MB por documento
+
+{
+    '_id': ObjectId('6697d45cf8cc178843fae2e6'), 
+    'nombre': 'a', 
+    'email': 'a@a.a', 
+    'password': b'$2b$12$LgVhJOz15n/2zs9B6N10xO2Gp.AuV7Fx8kj12tEMfI0TWqYHhAsRq'
+    'compras': [
+        {
+            'id': ObjectId('323456782003539),
+            'producto': "Lavadora",
+            'cantidad': 2,
+            'precio': 1300,
+            'fecha': "2024-07-09"
+        },
+        {
+            'id': ObjectId('323456782872319),
+            'producto': "Tostadora",
+            'cantidad': 1,
+            'precio': 35,
+            'fecha': "2024-07-15"
+        }
+    ]
+}
+
+## 2- Relación referenciada (referenced)
+- En este enfoque, las compras se almacenan en una colección separada y cad compra tiene una referencia al usuario que la compró mediante un id único. Este método es más flexible y escalable, especialmente si esperas que las compras sean elevadas.
+
+```json users:
+
+{
+    '_id': ObjectId('6697d45cf8cc178843fae2e6'), 
+    'nombre': 'a', 
+    'email': 'a@a.a', 
+    'password': b'$2b$12$LgVhJOz15n/2zs9B6N10xO2Gp.AuV7Fx8kj12tEMfI0TWqYHhAsRq'
+}
+
+```json purchaces:
+{
+    'id': ObjectId('323456782003539),
+    'user_id': 1,
+    'producto': "Lavadora",
+    'cantidad': 2,
+    'precio': 1300,
+    'fecha': "2024-07-09"
+}
+
+{
+    'id': ObjectId('323456782872319),
+    'user_id': 1,
+    'producto': "Tostadora",
+    'cantidad': 1,
+    'precio': 35,
+    'fecha': "2024-07-15"
+}
