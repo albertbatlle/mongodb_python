@@ -18,4 +18,21 @@ def findUsers(db, collection):
 def testFindOne (db, collection, email):
     return db[collection].find_one({"email":email})
 
+def insertPurchase(db, collection, email, data):
+      result = db[collection].update_one(
+            {"email":email},
+            {"$push": {"compras": data}}
+        )
+      
+      result = dict(result.raw_result)
+      if result["updatedExisting"]:
+            print("Compra realizada.")
+      else:
+            print("Usuario no registrado en nuestra BBDD.")
+
+    #   if dict(result.raw_result.updatedExisting):
+    #       print("Compra realizada")
+    #   else:
+    #         print("Usuario no registrado en nuestra app")
+
 

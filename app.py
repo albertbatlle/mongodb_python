@@ -1,4 +1,4 @@
-import database, bcrypt
+import database, utils, bcrypt, datetime
 
 def app(): 
 
@@ -6,13 +6,15 @@ def app():
 
     while True:
         # Menu
-        print("----------------------")
+        print("---------Users---------")
         print("1: Añadir un usuario")
         print("2: Ver usuarios")
         print("3: Buscar usuario por mail")
-        print("-----------------------")
-        print("4: Añadir una compra (embedded)")
-        print("5: Añadir una compra (referenced)")
+        print("4: TODO: Eliminar usuario por mail")
+        print("5: TODO: Login")
+        print("--------Purchases------")
+        print("6: Añadir una compra (embedded)")
+        print("7: TODO: Añadir una compra (referenced)")
         print("Escribre 'exit' para salir")
 
         opcion = input("Seleccione una opción: ")
@@ -22,7 +24,11 @@ def app():
         if opcion == "1":
             nombre = input("Nombre: ")
             email = input("email: ")
-
+            while utils.validar_email(email) == False:
+                email = input("Introduce email correcto: ")
+           # if not utils.validar_email(email):
+            #    print("Email con formato incorrecto")
+             #   return
             password = input("Contraseña: ")
             passHashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
             # Validar si el mail ya está registrado
@@ -50,6 +56,19 @@ def app():
                 print(user)
             else:
                 print("Usuario no encontrado")
+
+        if opcion == "6":
+            email = input("Email del usuario: ")
+            producto = input("Producto: ")
+            cantidad = input("Cantidad: ")
+            precio = input("Precio: ")
+            data = {
+                "producto": producto,
+                "cantidad": cantidad,
+                "precio": precio,
+                "fecha": datetime.datetime.now()
+            }
+            database.insertPurchase(db, "users", email, data)
 
         if opcion == "exit":
             print("Bye")
