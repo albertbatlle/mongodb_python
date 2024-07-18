@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import bcrypt
 
 def connect():
         client = MongoClient("mongodb+srv://root:Sagrera2017@cluster0.vxax9o3.mongodb.net/")
@@ -37,6 +38,10 @@ def insertPurchase(db, collection, email, data):
 
 def deleteUser(db, collection, email):
       return db[collection].delete_one({'email': email})
-      
-def loggingUser(db, collection, email, password):
+
+def insertPurchase(db, collection, data):
+      db[collection].insert_one[data]
+      print("Compra realizada con éxito.")
+
+#def validarPassword(db, collection):
       

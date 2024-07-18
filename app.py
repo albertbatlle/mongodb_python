@@ -46,6 +46,9 @@ def app():
                 
         if opcion == "2":
             userObj = database.findUsers(db, "users")
+            # if len(dict(userObj)) == 0:
+            #     print("No hay usuarios registrados.")
+            #     return
             for user in userObj:
                 print(user)
 
@@ -67,7 +70,20 @@ def app():
                 print(f"Usuario {email} no encontrado")
         
         if opcion == "5":
-            logging.getLogger('pymongo.<componentName>').setLevel(logging.DEBUG)
+            email = input("Email: ")
+            password = input("Password: ")
+
+            user = database.testFindOne(db, "users", email)
+            if user:
+                if bcrypt.checkpw(password, passHashed):
+                    print("It Matches!")
+                else:
+                    print("It Does not Match :(")
+
+            else:
+                print("Usuario no encontrado")
+            
+            #logging.getLogger('pymongo.<componentName>').setLevel(logging.DEBUG)
             # https://pymongo.readthedocs.io/en/stable/examples/logging.html
         
         if opcion == "6":
@@ -82,6 +98,25 @@ def app():
                 "fecha": datetime.datetime.now()
             }
             database.insertPurchase(db, "users", email, data)
+
+        if opcion == "7":
+            email = input("Email del usuario: ")
+            user = database.testFindOne(db,"users", email)
+            if user:
+                producto = input("Producto: ")
+                cantidad = input("Cantidad: ")
+                precio = input("Precio: ")
+                data = {
+                    "producto": producto,
+                    "cantidad": cantidad,
+                    "precio": precio,
+                    "fecha": datetime.datetime.now()
+                }
+                user = dict(user)
+                data["user_id"] = user["id"]
+                database.insertPurchase(db, "purchases", data)
+            else:
+                print("No existe este usuario.")
 
         if opcion == "exit":
             print("Bye")

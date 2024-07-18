@@ -97,3 +97,5 @@
     'precio': 35,
     'fecha': "2024-07-15"
 }
+
+## 3- Consultas poderosas
